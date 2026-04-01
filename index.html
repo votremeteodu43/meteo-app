@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Météo</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: linear-gradient(to bottom, #0d1b2a, #1b263b);
+  color: white;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  padding: 15px;
+}
+
+.container {
+  padding: 15px;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.detail {
+  display: none;
+  background: rgba(255,255,255,0.08);
+  padding: 15px;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.big-icon {
+  font-size: 50px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.temp {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🌤️ Ma météo</h1>
+
+<div class="container" id="app"></div>
+
+<script>
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1pTkyNfvT7YeGmhg500CzskOUf_-tkSgsuOk1RkQ178wE8GD0YR-4BCsVlWDfeMkBgZKZrrrw44sv/pub?gid=0&single=true&output=csv";
+
+fetch(url)
+  .then(res => res.text())
+  .then(data => {
+
+    const rows = data.trim().split("\n").slice(1);
+    const app = document.getElementById("app");
+
+    rows.forEach(row => {
+
+      const cols = row.split(",");
+
+      if (cols.length < 11) return; // sécurité
+
+      const jour = cols[1];
+      const date = cols[2];
+      const iconMatin = cols[3];
+      const iconAprem = cols[4];
+      const tminMatin = cols[5];
+      const tmaxMatin = cols[6];
+      const tminAprem = cols[7];
+      const tmaxAprem = cols[8];
+      const prev = cols[9];
+      const update = cols[10];
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `<b>${jour}</b> - ${date}`;
+
+      const detail = document.createElement("div");
+      detail.className = "detail";
+
+      detail.innerHTML = `
+        <h2>${jour} - ${date}</h2>
+
+        <h3>Matin</h3>
+        <div class="big-icon">${iconMatin}</div>
+        <div class="temp">${tminMatin}° / ${tmaxMatin}°</div>
+
+        <h3>Après-midi</h3>
+        <div class="big-icon">${iconAprem}</div>
+        <div class="temp">${tminAprem}° / ${tmaxAprem}°</div>
+
+        <p>${prev}</p>
+        <small>Maj : ${update}</small>
+      `;
+
+      card.onclick = () => {
+        document.querySelectorAll(".detail").forEach(d => d.style.display = "none");
+        detail.style.display = "block";
+      };
+
+      app.appendChild(card);
+      app.appendChild(detail);
+
+    });
+
+  })
+  .catch(err => {
+    document.getElementById("app").innerHTML = "Erreur chargement données 😢";
+    console.error(err);
+  });
+</script>
+
+</body>
+</html>
