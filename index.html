@@ -90,9 +90,6 @@ fetch(url)
       const tmaxAprem = cols[8];
       const prev = cols[9];
       const update = cols[10];
-      const tminlp = parseFloat(cols[11]);
-      const tmaxlp = parseFloat(cols[12]);
-      const mois = parseInt(date.split("/")[1]);
 
       const card = document.createElement("div");
       card.className = "card";
@@ -107,13 +104,13 @@ fetch(url)
         <h3>Matin</h3>
         <div class="big-icon">${iconMatin}</div>
         <div class="temp">
-  ${tminMatin}° / ${tmaxMatin}° ${ecartMatin}
+  ${tminMatin}° / ${tmaxMatin}°
 </div>
 
         <h3>Après-midi</h3>
         <div class="big-icon">${iconAprem}</div>
         <div class="temp">
-  ${tminAprem}° / ${tmaxAprem}° ${ecartAprem}
+  ${tminAprem}° / ${tmaxAprem}°
 </div>
 
         <p>${prev}</p>
