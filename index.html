@@ -73,45 +73,12 @@ fetch(url)
 
     const rows = data.trim().split("\n").slice(1);
     const app = document.getElementById("app");
-    let moyennes = {};
-
-rows.forEach(row => {
-  const cols = row.split(",");
-  const mois = cols[14]; // colonne O
-  const min = cols[15];  // colonne P
-  const max = cols[16];  // colonne Q
-
-  if (mois) {
-    moyennes[mois] = {
-      min: parseFloat(min),
-      max: parseFloat(max)
-    };
-  }
-});
 
     rows.forEach(row => {
 
       const cols = row.split(",");
 
       if (cols.length < 11) return; // sécurité
-
-      const moyenne = moyennes[mois];
-
-let ecartMatin = "";
-let ecartAprem = "";
-
-if (moyenne) {
-  const diffMatin = Math.round(tmaxMatin - moyenne.max);
-  const diffAprem = Math.round(tmaxAprem - moyenne.max);
-
-  ecartMatin = diffMatin >= 0 
-    ? `<span style="color:red">(+${diffMatin})</span>`
-    : `<span style="color:lightblue">(${diffMatin})</span>`;
-
-  ecartAprem = diffAprem >= 0 
-    ? `<span style="color:red">(+${diffAprem})</span>`
-    : `<span style="color:lightblue">(${diffAprem})</span>`;
-}
 
       const jour = cols[1];
       const date = cols[2];
